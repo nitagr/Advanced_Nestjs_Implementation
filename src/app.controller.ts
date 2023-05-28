@@ -1,12 +1,15 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseInterceptors, CacheTTL, Param} from '@nestjs/common';
+import { CacheInterceptor, CacheKey } from '@nestjs/cache-manager'
 import { AppService } from './app.service';
 
-@Controller()
+@Controller('app')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly service: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @UseInterceptors(CacheInterceptor) 
+  @CacheKey('test-cache')
+  @Get('/:id')
+  async getPokemon(@Param('id') id: number): Promise<string> {
+    return await this.service.getPokemon(+id);
   }
 }
