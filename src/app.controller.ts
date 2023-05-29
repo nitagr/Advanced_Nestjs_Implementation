@@ -6,8 +6,8 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly service: AppService) {}
 
-  @UseInterceptors(CacheInterceptor) 
-  @CacheKey('test-cache')
+  // @UseInterceptors(CacheInterceptor) 
+  // @CacheKey('test-cache')
   @Get('/:id')
   async getPokemon(@Param('id') id: number): Promise<string> {
     return await this.service.getPokemon(+id);
